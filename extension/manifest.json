@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Sleeper Draft Copilot",
+  "version": "1.0.0",
+  "description": "Watches a live Sleeper draft, computes a value-based shortlist locally, and asks Claude for the final pick recommendation.",
+  "permissions": ["storage", "sidePanel"],
+  "host_permissions": [
+    "https://api.sleeper.app/*",
+    "https://api.anthropic.com/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://sleeper.com/draft/*"],
+      "js": ["content/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "side_panel": {
+    "default_path": "sidepanel/panel.html"
+  },
+  "action": {
+    "default_title": "Open Draft Copilot"
+  }
+}

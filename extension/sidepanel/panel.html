@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sleeper Draft Copilot</title>
+  <link rel="stylesheet" href="panel.css" />
+</head>
+<body>
+  <!-- ===================== SETUP VIEW ===================== -->
+  <div id="setup-view">
+    <h1>Sleeper Draft Copilot</h1>
+    <div class="subtitle">Live value-based draft advisor</div>
+
+    <div class="card">
+      <div class="section-title">Claude API</div>
+      <label for="api-key">Anthropic API key</label>
+      <div class="row">
+        <input id="api-key" type="password" placeholder="sk-ant-..." autocomplete="off" />
+        <button id="save-key" class="primary">Save</button>
+        <button id="clear-key">Clear</button>
+      </div>
+      <div id="key-status" class="muted"></div>
+
+      <label for="model-select">Model</label>
+      <select id="model-select"></select>
+
+      <label for="precompute-effort">Precompute effort (fires 2-3 picks before yours)</label>
+      <select id="precompute-effort">
+        <option value="low">Low (~15s)</option>
+        <option value="medium">Medium</option>
+        <option value="high">High (~31s)</option>
+        <option value="xhigh">X-High (~55s — default)</option>
+        <option value="max">Max (~2+ min — only for slow rooms)</option>
+      </select>
+
+      <label class="check-row" for="council-toggle">
+        <input id="council-toggle" type="checkbox" />
+        <span>Council on every pick (3 advisors + synthesis, launched ~30s before your turn)</span>
+      </label>
+    </div>
+
+    <div class="card">
+      <div class="section-title">You</div>
+      <label for="sleeper-username">Sleeper username (to find your draft slot)</label>
+      <div class="row">
+        <input id="sleeper-username" type="text" placeholder="username" autocomplete="off" />
+        <button id="save-username">Save</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Draft</div>
+      <div id="detected-slot"></div>
+      <label for="draft-input">Or paste a draft URL / id</label>
+      <div class="row">
+        <input id="draft-input" type="text" placeholder="https://sleeper.com/draft/nfl/123..." />
+        <button id="connect-manual" class="primary">Connect</button>
+      </div>
+      <div id="connect-status" class="muted"></div>
+    </div>
+  </div>
+
+  <!-- ===================== DRAFT VIEW ===================== -->
+  <div id="draft-view" class="hidden">
+    <div class="topbar">
+      <button id="back-to-setup" class="link-btn">&larr; Setup</button>
+      <span id="conn-model" class="muted"></span>
+    </div>
+
+    <div id="notices"></div>
+
+    <div class="card">
+      <div class="dheader" id="dheader"></div>
+    </div>
+
+    <div class="card" id="slot-picker-card" style="display:none">
+      <div class="section-title">Your draft slot</div>
+      <div class="row">
+        <select id="slot-select"></select>
+        <button id="apply-slot" class="primary">Set</button>
+      </div>
+      <div class="muted">We couldn't auto-detect your slot from your username.</div>
+    </div>
+
+    <div class="card" id="claude-card">
+      <div class="section-title">Claude recommendation</div>
+      <div id="recs"><div class="muted">No recommendation yet.</div></div>
+      <div class="rec-meta" id="rec-meta"></div>
+      <div class="rec-buttons">
+        <button id="advise-now" class="primary">Advise now</button>
+        <button id="council-btn" title="3 advisor lenses + synthesis, ~4 calls">Council</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">Shortlist (value engine)</div>
+      <div id="shortlist"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">My roster</div>
+      <div id="roster"></div>
+    </div>
+
+    <div class="card" id="runs-card" style="display:none">
+      <div class="section-title">Position runs</div>
+      <div class="runs-strip" id="runs"></div>
+    </div>
+  </div>
+
+  <script type="module" src="panel.js"></script>
+</body>
+</html>
